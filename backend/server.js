@@ -13,7 +13,14 @@ dotenv.config();
 connectDB();
 
 const app = express();
+
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  'http://localhost:5173',
+];
+
 const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
     origin: allowedOrigins,
@@ -21,11 +28,6 @@ const io = new Server(server, {
     credentials: true,
   },
 });
-
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  'http://localhost:5173',
-];
 
 app.use(cors({
   origin: (origin, callback) => {
