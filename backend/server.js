@@ -117,7 +117,7 @@ io.on('connection', (socket) => {
   
     let privateChannel = await Channel.findOne({ name: privateChannelName });
     if (!privateChannel) {
-      privateChannel = new Channel({ name: privateChannelName, users: [sender, recipient], isPrivate: true });
+      privateChannel = new Channel({ name: privateChannelName, users: [sender, recipient], isPrivate: true, messages: [] });
       await privateChannel.save();
     } else {
       if (!privateChannel.users.includes(sender)) privateChannel.users.push(sender);
@@ -135,11 +135,14 @@ io.on('connection', (socket) => {
       const newMessage = new Message({ sender, recipient, text, channel: privateChannelName, isPrivate: true });
       await newMessage.save();
   
+      privateChannel.messages.push(newMessage._id);
+      await privateChannel.save();
+  
       io.to(privateChannelName).emit('message', { sender, text, isPrivate: true, channel: privateChannelName });
     } catch (error) {
       console.error(`❌ Error saving private message: ${error.message}`);
     }
-  });
+  });  
   
   socket.on('disconnect', async () => {
     const username = users[socket.id];
