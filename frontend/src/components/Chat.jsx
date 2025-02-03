@@ -163,9 +163,7 @@ const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
                           padding: 1.5,
                           maxWidth: '70%',
                           ml: message.sender === username ? "auto" : 0,
-                          color: message.isPrivate 
-                            ? 'warning.contrastText' 
-                            : (message.sender === username ? 'text.primary' : 'text.primary'),
+                          color: (message.sender === username ? 'text.primary' : 'text.primary'),
                           borderRadius: message.sender === username ? '16px 0 16px 16px' : '0 16px 16px 16px',
                           textAlign: message.sender === username ? "right" : "left",
                         }}

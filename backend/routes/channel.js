@@ -18,14 +18,27 @@ router.post('/create', async (req, res) => {
 
 // List all channels
 router.get('/', async (req, res) => {
+    const { username } = req.query;
+  
     try {
-        const channels = await Channel.find({ isPrivate: { $ne: true } });
-        res.json(channels);
+      let channels;
+      if (username) {
+        channels = await Channel.find({
+          $or: [
+            { isPrivate: false },
+            { users: username },
+          ],
+        });
+      } else {
+        channels = await Channel.find({ isPrivate: false });
+      }
+  
+      res.json(channels);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+      res.status(500).json({ message: error.message });
     }
-});
-
+  });
+  
 // Delete a channel
 router.delete('/delete/:name', async (req, res) => {
     const { name } = req.params;
