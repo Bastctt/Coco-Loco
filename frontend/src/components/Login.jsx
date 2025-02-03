@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 // utils
 import socket from '../utils/socket';
 
+import cocoLoco from '../assets/coco.png';
+
 // lib
 import { useSnackbar } from 'notistack';
 import { useTheme } from '@mui/material/styles';
@@ -59,7 +61,7 @@ const Login = ({ onLogin }) => {
         <Typography variant="h4" gutterBottom>
           Welcome to Coco Loco IRC
         </Typography>
-        <img style={{ width: '30px', height: '30px' }} src="frontend/src/assets/coco.png"  alt="Coco Loco Logo" />
+        <img style={{ width: '30px', height: '30px' }} src={cocoLoco} alt="Coco Loco Logo" />
       </Stack>
       <Stack direction="column" spacing={2} alignItems={'center'}>
       <TextField
