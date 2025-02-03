@@ -110,11 +110,22 @@ router.post('/quit', async (req, res) => {
 // List available channels, optionally filtering by a search string
 router.get('/list/:filter?', async (req, res) => {
     const { filter } = req.params;
+    const { username } = req.query;
 
     try {
         let query = {};
+
         if (filter) {
-            query = { name: { $regex: filter, $options: 'i' } };
+            query.name = { $regex: filter, $options: 'i' };
+        }
+
+        if (username) {
+            query.$or = [
+                { isPrivate: false },
+                { users: username }
+            ];
+        } else {
+            query.isPrivate = false;
         }
 
         const channels = await Channel.find(query);

@@ -54,21 +54,21 @@ const handleCommand = async (command, { username, setUsername, channelName, setA
 
       case '/list': {
         try {
-          const filter = parts.slice(1).join(' ');
-          const { data } = await api.listChannels(filter);
-          
-          if (data.length === 0) {
-            enqueueSnackbar('No channels found.', { variant: 'info' });
-          } else {
-            const channelNames = data.map((channel) => `#${channel.name}`).join(', ');
-            enqueueSnackbar(`Available channels: ${channelNames}`, { variant: 'info' });
-          }
-          setCurrentMessage('');
+            const filter = parts.slice(1).join(' ');
+            const { data } = await api.listChannels(filter, username);
+    
+            if (data.length === 0) {
+                enqueueSnackbar('No channels found.', { variant: 'info' });
+            } else {
+                const channelNames = data.map((channel) => `#${channel.name}`).join(', ');
+                enqueueSnackbar(`Available channels: ${channelNames}`, { variant: 'info' });
+            }
+            setCurrentMessage('');
         } catch (error) {
-          enqueueSnackbar('Failed to fetch channels', { variant: 'error' });
+            enqueueSnackbar('Failed to fetch channels', { variant: 'error' });
         }
         break;
-      }
+    }    
 
       case '/join': {
         const channelToJoin = parts.slice(1).join(' ');

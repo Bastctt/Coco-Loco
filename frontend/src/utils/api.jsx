@@ -7,7 +7,7 @@ const api = {
   getChannels: () => axios.get(`${API_BASE_URL}/channels`),
   createChannel: (name) => axios.post(`${API_BASE_URL}/channels/create`, { name }),
   deleteChannel: (name) => axios.delete(`${API_BASE_URL}/channels/delete/${name}`),
-  listChannels: (filter = '') => axios.get(`${API_BASE_URL}/channels/list/${filter}`),
+  listChannels: (filter = '', username) => axios.get(`${API_BASE_URL}/channels/list/${filter}`, { params: { username }}),
   joinChannel: (name, username) => axios.post(`${API_BASE_URL}/channels/join`, { name, username }),
   quitChannel: (name, username) => axios.post(`${API_BASE_URL}/channels/quit`, { name, username }),
 
