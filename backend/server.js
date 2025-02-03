@@ -126,8 +126,10 @@ io.on('connection', (socket) => {
     }
   
     socket.join(privateChannelName);
+
     const recipientSocketId = Object.keys(users).find((key) => users[key] === recipient);
     if (recipientSocketId) {
+      io.sockets.sockets.get(recipientSocketId)?.join(privateChannelName);
       io.to(recipientSocketId).emit('joinChannel', { username: recipient, channelName: privateChannelName });
     }
   
@@ -142,7 +144,7 @@ io.on('connection', (socket) => {
     } catch (error) {
       console.error(`❌ Error saving private message: ${error.message}`);
     }
-  });  
+  });
   
   socket.on('disconnect', async () => {
     const username = users[socket.id];
