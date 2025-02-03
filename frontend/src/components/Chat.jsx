@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import moment from 'moment';
 
 // utils
 import api from '../utils/api';
@@ -13,6 +14,7 @@ import { useTheme } from '@mui/material/styles';
 // mui
 import SendIcon from '@mui/icons-material/Send';
 import { Box, TextField, List, ListItem, Typography, Avatar, Paper, CircularProgress, IconButton, Popover, Stack } from '@mui/material';
+import { use } from 'react';
 
 const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
   const [messages, setMessages] = useState([]);
@@ -65,7 +67,7 @@ const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
     if (currentMessage.startsWith('/')) {
       handleCommand(currentMessage, { username, setUsername, channelName, setActiveChannel, enqueueSnackbar, setMessages, setCurrentMessage });
     } else if (currentMessage.trim() && channelName) {
-      const newMessage = { sender: username, text: currentMessage, channel: channelName };
+      const newMessage = { sender: username, text: currentMessage, channel: channelName, timestamp: new Date() };
       try {
         socket.emit('sendMessage', newMessage);
       } catch (error) {
@@ -131,6 +133,7 @@ const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
                     display: 'flex',
                     justifyContent: message.sender === "System" ? "center" : (message.sender === username ? "flex-end" : "flex-start"),
                     marginBottom: 1,
+                    flexDirection: message.sender === username ? "row-reverse" : "row",
                   }}
                 >
                   {message.sender === "System" ? (
@@ -138,11 +141,11 @@ const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
                       sx={{
                         padding: 1.5,
                         maxWidth: '80%',
-                        color: 'rgba(0, 0, 0, 0.54)',
+                        color: isDarkMode ? 'white' : 'rgba(0, 0, 0, 0.54)',
                         textAlign: 'center',
                         borderRadius: 2,
-                        fontWeight:"bold",
-                        fontStyle:"italic"
+                        fontWeight: "bold",
+                        fontStyle: "italic"
                       }}
                     >
                       <Typography variant="subtitle2" fontWeight="bold">
@@ -154,21 +157,32 @@ const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
                       <Avatar sx={{ bgcolor: message.sender === username ? 'primary.main' : 'secondary.main', margin: 1 }}>
                         {message.sender.charAt(0).toUpperCase()}
                       </Avatar>
+
                       <Paper
-                        elevation={1}
+                        elevation={0}
                         sx={{
                           padding: 1.5,
                           maxWidth: '70%',
-                          backgroundColor: message.isPrivate ? 'warning.light' : (message.sender === username ? 'primary.light' : 'background.default'),
-                          color: message.isPrivate ? 'warning.contrastText' : (message.sender === username ? 'primary.contrastText' : 'text.primary'),
+                          ml: message.sender === username ? "auto" : 0,
+                          color: message.isPrivate 
+                            ? 'warning.contrastText' 
+                            : (message.sender === username ? 'text.primary' : 'text.primary'),
                           borderRadius: message.sender === username ? '16px 0 16px 16px' : '0 16px 16px 16px',
+                          textAlign: message.sender === username ? "right" : "left",
                         }}
                       >
-                          <Typography variant="subtitle2" fontWeight="bold">
-                            {message.sender} {message.isPrivate && '(Private Chat)'}
-                          </Typography>
-                          <Typography variant="body2">{message.text}</Typography>
-                        </Paper>
+                        <Typography variant="subtitle2" fontWeight="bold" mb={1}>
+                          {message.sender} {message.isPrivate && '(Private Chat)'}
+                        </Typography>
+                        <Typography variant="body2" mb={1}>{message.text}</Typography>
+                        <Typography 
+                          variant="caption" 
+                          color={message.isPrivate ? 'warning.contrastText' : 'text.secondary'}
+                          sx={{ display: "block", textAlign: message.sender === username ? "right" : "left" }}
+                        >
+                          {moment(message.timestamp).format('LTS')}
+                        </Typography>
+                      </Paper>
                     </>
                   )}
                 </ListItem>
@@ -180,6 +194,7 @@ const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
             )}
             <div ref={messagesEndRef} />
           </List>
+
         )}
       </Paper>
 
