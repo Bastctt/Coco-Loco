@@ -174,7 +174,7 @@ const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
                         <Typography variant="body2" mb={1}>{message.text}</Typography>
                         <Typography 
                           variant="caption" 
-                          color={message.isPrivate ? 'warning.contrastText' : 'text.secondary'}
+                          color={message.isPrivate ? 'text.secondary' : 'text.secondary'}
                           sx={{ display: "block", textAlign: message.sender === username ? "right" : "left" }}
                         >
                           {moment(message.timestamp).format('LTS')}
