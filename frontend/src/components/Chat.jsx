@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { format } from 'date-fns';
 
 // utils
 import api from '../utils/api';
@@ -154,6 +155,10 @@ const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
                       <Avatar sx={{ bgcolor: message.sender === username ? 'primary.main' : 'secondary.main', margin: 1 }}>
                         {message.sender.charAt(0).toUpperCase()}
                       </Avatar>
+                      <Stack direction={"column"} gap={0.5}>
+                        <Typography variant="subtitle2" fontWeight="bold">
+                          {message.sender} {message.isPrivate && '(Private Chat)'}
+                        </Typography>
                       <Paper
                         elevation={1}
                         sx={{
@@ -164,11 +169,12 @@ const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
                           borderRadius: message.sender === username ? '16px 0 16px 16px' : '0 16px 16px 16px',
                         }}
                       >
-                        <Typography variant="subtitle2" fontWeight="bold">
-                          {message.sender} {message.isPrivate && '(Private Chat)'}
-                        </Typography>
-                        <Typography variant="body2">{message.text}</Typography>
-                      </Paper>
+                          <Typography variant="body2">{message.text}</Typography>
+                        </Paper>
+                          <Typography variant="caption" sx={{ fontSize: "9px"}} color="text.secondary">
+                            {format(new Date(message.timestamp), 'PPpp')}
+                          </Typography> 
+                        </Stack>                     
                     </>
                   )}
                 </ListItem>
