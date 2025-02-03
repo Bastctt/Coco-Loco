@@ -14,7 +14,6 @@ import { useTheme } from '@mui/material/styles';
 // mui
 import SendIcon from '@mui/icons-material/Send';
 import { Box, TextField, List, ListItem, Typography, Avatar, Paper, CircularProgress, IconButton, Popover, Stack } from '@mui/material';
-import { use } from 'react';
 
 const Chat = ({ username, channelName, setUsername, setActiveChannel }) => {
   const [messages, setMessages] = useState([]);
