@@ -57,9 +57,9 @@ const Login = ({ onLogin }) => {
     >
       <Stack direction="row" spacing={2} alignItems={'center'}>
         <Typography variant="h4" gutterBottom>
-          Coco Loco IRC
+          Welcome to Coco Loco IRC
         </Typography>
-        <img style={{ width: '30px', height: '30px' }} src="src/assets/coco.png" alt="Coco Loco Logo" />
+        <img style={{ width: '30px', height: '30px' }} src="frontend/src/assets/coco.png"  alt="Coco Loco Logo" />
       </Stack>
       <Stack direction="column" spacing={2} alignItems={'center'}>
       <TextField
